@@ -10,7 +10,7 @@ import time
 import numpy as np
 from simple_pid import PID
 from termcolor import colored
-import ikpy
+from ikpy import chain
 from pyquaternion import Quaternion
 import cv2 as cv
 import matplotlib.pyplot as plt
@@ -38,13 +38,17 @@ class MJ_Controller(object):
         self.create_lists()
         self.groups = defaultdict(list)
         self.groups["All"] = list(range(len(self.sim.data.ctrl)))
-        self.create_group("Arm", list(range(5)))
+        self.create_group("Arm", list(range(6)))
         self.create_group("Gripper", [6])
         self.actuated_joint_ids = np.array([i[2] for i in self.actuators])
         self.reached_target = False
         self.current_output = np.zeros(len(self.sim.data.ctrl))
         self.image_counter = 0
-        self.ee_chain = ikpy.chain.Chain.from_urdf_file(path + "/UR5+gripper/ur5_gripper.urdf")
+        #tochangge
+        #self.ee_chain = chain.Chain.from_urdf_file(path + "/UR5+gripper/ur5.urdf")
+        self.ee_chain = chain.Chain.from_urdf_file(path + "/UR5+gripper/ur5.urdf",
+                                                        active_links_mask=[False, True, True, True, True, True, True,
+                                                                           False])
         self.cam_matrix = None
         self.cam_init = False
         self.last_movement_steps = 0
@@ -506,7 +510,7 @@ class MJ_Controller(object):
             )
             diff = abs(prediction - ee_position)
             error = np.sqrt(diff.dot(diff))
-            joint_angles = joint_angles[1:-2]
+            joint_angles = joint_angles[1:-1] #tochangge
             if error <= 0.02:
                 return joint_angles
 
