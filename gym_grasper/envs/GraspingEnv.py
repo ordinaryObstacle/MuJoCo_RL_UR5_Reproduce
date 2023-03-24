@@ -33,6 +33,7 @@ class GraspEnv(mujoco_env.MujocoEnv, utils.EzPickle):
         show_obs=True,
         demo=False,
         render=False,
+        observation_space=None  #to changge
     ):
         self.initialized = False
         self.IMAGE_WIDTH = image_width
@@ -44,7 +45,7 @@ class GraspEnv(mujoco_env.MujocoEnv, utils.EzPickle):
         path = os.path.realpath(__file__)
         path = str(Path(path).parent.parent.parent)
         full_path = path + file
-        mujoco_env.MujocoEnv.__init__(self, full_path, 1)
+        mujoco_env.MujocoEnv.__init__(self, full_path, 1)   #tochangge model_path, frame_skip
         if render:
             # render once to initialize a viewer object
             self.render()
@@ -395,9 +396,9 @@ class GraspEnv(mujoco_env.MujocoEnv, utils.EzPickle):
             show: If True, displays the observation in a cv2 window.
         """
 
-        rgb, depth = self.controller.get_image_data(
-            width=self.IMAGE_WIDTH, height=self.IMAGE_HEIGHT, show=show
-        )
+        # rgb, depth = self.controller.get_image_data(
+        #     width=self.IMAGE_WIDTH, height=self.IMAGE_HEIGHT, show=show
+        # )
         depth = self.controller.depth_2_meters(depth)
         observation = defaultdict()
         observation["rgb"] = rgb

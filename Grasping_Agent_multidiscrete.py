@@ -83,7 +83,9 @@ class Grasp_Agent:
         self.depth_only = depth_only
         if train:
             self.env = gym.make(
-                "gym_grasper:Grasper-v0", image_height=HEIGHT, image_width=WIDTH, render=False
+                "gym_grasper:Grasper-v0"
+                #tochangge
+                #"gym_grasper:Grasper-v0", image_height=HEIGHT, image_width=WIDTH, render=False
             )
             # self.env = gym.make('gym_grasper:Grasper-v0', image_height=HEIGHT, image_width=WIDTH)
         else:
